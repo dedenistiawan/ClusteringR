@@ -53,17 +53,17 @@ div.rmdwarn::before, div.rmdnote::before, div.rmdtip::before {
 }
 
 div.rmdwarn::before {
-  content: "警告";
+  content: "Warning";
   color: #EA4335;
 }
 
 div.rmdnote::before {
-  content: "注意";
+  content: "Note";
   color: #FBBC05;
 }
 
 div.rmdtip::before {
-  content: "提示";
+  content: "Tips";
   color: #34A853;
 }
 

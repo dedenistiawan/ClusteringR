@@ -16,14 +16,14 @@ language:
     solution: "untie "
   ui:
     edit: "Edit"
-    chapter_name: ["Bab "]
+    #chapter_name: ["Bab "]
 
 new_session: yes
 before_chapter_script: _common.R
 
 rmd_files: 
   - "index.Rmd"
-  - "01-intro.Rmd"
-  - "02-literature.Rmd"
-  - "07-appendix.Rmd"
-  - "06-references.Rmd"
+  - "01-partition.Rmd"
+  - "02-prob.Rmd"
+  - "03-evalC.Rmd"
+  - "04-references.Rmd"

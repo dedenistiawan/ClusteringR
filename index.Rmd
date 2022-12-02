@@ -1,4 +1,4 @@
---- 
+---
 title: "Analisis Cluster dengan R"
 author: "Deden Istiawan"
 site: bookdown::bookdown_site
@@ -12,55 +12,67 @@ graphics: true
 lot: true
 lof: true
 github-repo: dedenistiawan/CLusteringR
-classoption: 
- - lang=cn
- - titlestyle=hang
- - chinesefont=ctexfont
+#classoption: 
+ #- lang=cn
+ #- titlestyle=hang
+ #- chinesefont=ctexfont
 description: "Analisis Cluster dengan menggunakan Bahasa Pemrograman R"
 ---
 
 \mainmatter
 
-# Pengantar {#welcome}
+```{=html}
+<style>
+body{
+text-align: justify}
+</style>
+```
+> "Why is that when one man builds a wall, the next needs to to know what's on the other side?"
+>
+> --- Tyrion Lannister-Game of Thrones
 
-> A Markdown-formatted document should be publishable as-is, as plain text, without looking like it’s been marked up with tags or formatting instructions.  
-> 
-> --- John Gruber
+# Pengantar Analisis Cluster
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+## Apa itu Analisis Cluster?
 
-```{r cars}
-summary(cars)
+Analisis *Cluster* mungkin salah satu yang paling banyak dipelajari dalam komunitas data mining dan *machine learning* [@bandyopadhyay2011]. Masalah ini telah dipelajari oleh para peneliti dari berbagai disiplin ilmu selama lima dekade. Penerapan analisis *cluster* mencakup berbagai domain masalah seperti teks, multimedia, jejaring sosial, dan data biologis. Clustering adalah topik yang agak beragam, dan algoritma yang mendasarinya sangat bergantung pada domain data dan skenario masalah [@2014clustering]. *Clustering* adalah proses pengelompokan sekumpulan objek data menjadi beberapa kelompok atau *cluster* sehingga objek yang berada di dalam *cluster* memiliki kesamaan yang tinggi, tetapi sangat berbeda dengan objek di *cluster* lain [@HanEtAl11]. Pada buku ini akan dijelaskan konsep dasar dan metode analisis cluster, yang tediri dari: metode pengelompokan partisi dan hirarki, Model Probabilistik dan evaluasi algoritma *clustering*.
+
+Analisis *cluster* atau *clustering* adalah proses mengelompokkan sekumpulan objek data menjadi beberapa kelompok. Setiap subset adalah *cluster*, sehingga objek dalam *cluster* memiliki kemiripan yang sangat tinggi, namun berbeda dengan objek di *cluster* lain. Himpunan *cluster* yang dihasilkan dari analisis *cluster* dapat disebut sebagai *clustering*. Dalam konteks ini, algoritma *clustering* yang berbeda dapat menghasilkan pengelompokan yang berbeda pada dataset yang sama. Oleh karena itu, pengelompokan berguna karena dapat mengarah pada penemuan kelompok yang sebelumnya tidak diketahui dalam data.
+
+## Apa itu Bahasa Pemrograman R?
+
+R adalah bahasa pemrograman dan software bebas yang dikembangkan oleh Ross Ihaka dan Robert Gentleman pada tahun 1993. R memiliki katalog ekstensif metode statistik dan grafis. Ini meliputi algoritma machine learning, regresi linier, time series, inferensi statistik untuk beberapa hal. R tidak hanya diandalkan oleh para akademisi, tetapi juga banyak perusahaan besar menggunakan bahasa pemrograman R, antara lain Uber, Google, Airbnb, Facebook, dan masih banyak lagi.[^index-1]
+
+[^index-1]: <https://wartaekonomi.co.id/read375198/apa-itu-r-programming-language>
+
+## Install R dan RStudio
+
+Untuk menginstall R, kamu tidak memerlukan budget untuk membeli lisensi. R merupakan aplikasi open source sehingga dapat kamu unduh secara gratis di laman aslinya. Berikut langkah penginstallan mulai dari cara download hingga R siap digunakan. Pertama buka [Halaman R Project](https://cran.r-project.org/). Pilih installer sesuai sistem operasi. Misalnya pilih **Download R for Windows** dan pilih **install R for the first time**. Tunggu proses unduh instaler dan jika sudah 100% terunduh klik file tersebut untuk mulai install R. setelah R berhasil diinstall langkah selanjutnya adalah menginstall program [RStudio](https://posit.co/download/rstudio-desktop/). Pada tahap ini kita akan install RStudio yaitu merupakan IDE yang umumnya digunakan untuk pemrograman R RStudio akan sangat membantu untuk melakukan coding R dan lainnya. Kita bisa langsung download installer versi terbaru atau jika ingin menggunakan versi sebelumnya bisa pilih all installer.
+
+## Menginstal dan memuat R packages
+Setelah selesai instalI [R](https://cran.r-project.org/) dan [RStudio](https://posit.co/download/rstudio-desktop/), serta memahami bagaimana menggunakannya, proses selanjutnya adalah instal R package. Kita dapat langsung melakukan instalasi R package yang sudah ada di [CRAN](https://cran.r-project.org/) repository (mayoritas R package ada di sini) dengan menuliskan perintah **install.packages(“nama package”)** pada RStudio atau di Console. Kita harus terhubung dengan koneksi internet untuk dapat instal package. Misal, kita instal package [*cluster*](https://cran.r-project.org/web/packages/cluster/index.html).
+
+```{r eval=FALSE}
+install.packages("cluster")
 ```
 
+selain melalui [CRAN](https://cran.r-project.org/) repository, intall packages juga dapat melaui [Github](https://github.com/). Anda harus terlebih dahulu harus menginstal [devtools](https://cran.r-project.org/web/packages/devtools/index.html) jika Anda belum menginstalnya di komputer Anda. Misalnya, kode R berikut menginstal paket factoextra R versi terbaru yang dikembangkan oleh A. Kassambara (https://github.com/kassambara/facoextra) untuk analisis data multivariat dan visualisasi yang elegan.
 
-## Lorem Ipsum1 {#pr}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-## Lorem Ipsum2 {#session-info}
-
-```{r}
-xfun::session_info(c(
-  "rmarkdown", "bookdown", "knitr"
-), dependencies = FALSE)
+```{r eval=FALSE}
+install.packages("devtools")
+devtools::install_github("kassambara/factoextra")
 ```
 
+::: {.rmdnote data-latex="{Note}"}
+Note that, GitHub contains the developmental version of R packages
+:::
 
-## Lorem Ipsum3 
+Setelah instalasi, pertama-tama Anda harus memuat paket untuk menggunakan fungsi-fungsi di dalam paket. Fungsi **library()**.
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-```bash
-echo "hello, world!" > note.md
-pandoc note.md -s -o note.tex # markdown tex 
-pandoc note.md -o note.pdf    # markdown pdf
-pandoc note.md -o note.html   # markdown html
+```{r eval=FALSE}
+library(cluster)
 ```
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-## Lorem Ipsum4 {#theorem-block}
 
 ```{lemma, chf-pdf}
 For any two random variables $X_1$, $X_2$, they both have the same probability distribution if and only if
@@ -76,14 +88,13 @@ $$\varphi _{S_{n}}(t)=\prod_{i=1}^n\varphi _{X_i}(a_{i}t)=\varphi _{X_{1}}(a_{1}
 The distribution of the sum of independent Poisson random variables $X_i \sim \mathrm{Pois}(\lambda_i),\: i=1,2,\cdots,n$ is $\mathrm{Pois}(\sum_{i=1}^n\lambda_i)$.
 ```
 
-
 ## Lorem Ipsum5 {#math-formular}
 
-[^load-bm]: <https://github.com/ElegantLaTeX/ElegantBook/blob/6ab10beda81252f0b478e05fa926199301347e4a/elegantbook.cls#L884>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. [^index-2].
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. [^load-bm].
+[^index-2]: <https://github.com/ElegantLaTeX/ElegantBook/blob/6ab10beda81252f0b478e05fa926199301347e4a/elegantbook.cls#L884>
 
-```html
+``` html
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       TeX: {
@@ -97,7 +108,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-```html
+``` html
 <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       TeX: {
@@ -112,7 +123,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-```latex
+``` latex
 \usepackage[makeroom]{cancel}
 ```
 
@@ -120,22 +131,20 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. <https://bookdown.org/yihui/rmarkdown-cookbook/custom-blocks.html>.
 
-
 [there is still a lot to do]{.todo}
 
-::: {.rmdwarn data-latex="{要做的还有很多}"}
+::: {.rmdwarn data-latex="{Warning}"}
 Warning
 :::
 
-::: {.rmdtip data-latex="{提示}"}
-这是提示
+::: {.rmdtip data-latex="{Tips}"}
+Tips
 :::
 
-:::: {.rmdnote data-latex="{注意}"}
-这是注意
-::::
-
-::: {.rmdinfo}
-普通说明
+::: {.rmdnote data-latex="{Note}"}
+Note
 :::
 
+::: rmdinfo
+Info
+:::
