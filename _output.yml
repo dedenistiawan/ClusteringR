@@ -4,16 +4,16 @@ bookdown::gitbook:
   config:
     toc:
       before: |
-        <li><a href="./">优雅的 bookdown 书籍模版</a></li>
+        <li><a href="./">Analisis Cluster dengan R</a></li>
       after: |
         <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
     download: ["pdf", "epub"]
     edit:
       link: https://github.com/XiangyunHuang/masr/edit/master/%s
-      text: "编辑"
+      text: "Edit"
     view:
       link: https://github.com/XiangyunHuang/masr/blob/master/%s
-      text: "查看"
+      text: "Check"
     sharing:
       github: yes
       facebook: no

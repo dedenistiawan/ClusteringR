@@ -1,22 +1,22 @@
-book_filename: "elegantbookdown"
+book_filename: "ClusteringR"
 delete_merged_file: true
 language:
   label:
-    fig: "图 "
-    tab: "表 "
-    thm: "定理 "
-    lem: "引理 "
-    cor: "推论 "
-    prp: "命题 "
-    def: "定义 "
-    exm: "例 "
-    exr: "练习 "
-    proof: "证明 "
-    remark: "注 "
-    solution: "解 "
+    fig: "Gambar "
+    tab: "Tabel "
+    thm: "Teorema "
+    lem: "Lemma "
+    cor: "inference "
+    prp: "proposition "
+    def: "Definisi "
+    exm: "Contoh "
+    exr: "practise "
+    proof: "prove "
+    remark: "Note "
+    solution: "untie "
   ui:
-    edit: "编辑"
-    chapter_name: ["第 ", " 章"]
+    edit: "Edit"
+    chapter_name: ["Bab "]
 
 new_session: yes
 before_chapter_script: _common.R
