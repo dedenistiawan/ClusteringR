@@ -23,7 +23,7 @@ before_chapter_script: _common.R
 
 rmd_files: 
   - "index.Rmd"
-  - "01-partition.Rmd"
-  - "02-prob.Rmd"
+  - "01-KM.Rmd"
+  - "02-FCM.Rmd"
   - "03-evalC.Rmd"
   - "04-references.Rmd"

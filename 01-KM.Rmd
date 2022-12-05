@@ -28,7 +28,7 @@ Pada eksprimen ini algoritma K-Means akan digunakan untuk mengelompokan data kem
 
 ### Data
 
-Package **readr** menyiapkan fungsi [`read_csv()`](https://readr.tidyverse.org/reference/read_delim.html) untuk import data dari file CSV. Pada kasus ini digunakan data [Data 40% Kemiskinan di jawa Tengah](https://github.com/dedenistiawan/Dataset/blob/main/BDT.csv).
+Package `reader` menyiapkan fungsi [`read_csv()`](https://readr.tidyverse.org/reference/read_delim.html) untuk import data dari file CSV. Pada kasus ini digunakan data [Data 40% Kemiskinan di jawa Tengah](https://github.com/dedenistiawan/Dataset/blob/main/BDT.csv).
 
 ```{r Load_data,warning=FALSE, tidy=FALSE}
 library (readr)
