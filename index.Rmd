@@ -2,21 +2,17 @@
 title: "Analisis Cluster dengan R"
 author: "Deden Istiawan"
 site: bookdown::bookdown_site
-documentclass: elegantbook
-bibliography: 
- - book.bib
-colorlinks: true
-link-citations: true
-mathspec: true
-graphics: true
-lot: true
-lof: true
+output: word_document
+bibliography: book.bib
+colorlinks: yes
+link-citations: yes
+mathspec: yes
+graphics: yes
+lot: no
+lof: no
 github-repo: dedenistiawan/CLusteringR
-#classoption: 
- #- lang=cn
- #- titlestyle=hang
- #- chinesefont=ctexfont
-description: "Analisis Cluster dengan menggunakan Bahasa Pemrograman R"
+description: Analisis Cluster dengan menggunakan Bahasa Pemrograman R
+documentclass: elegantbook
 ---
 
 \mainmatter
