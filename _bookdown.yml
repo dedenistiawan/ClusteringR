@@ -26,4 +26,4 @@ rmd_files:
   - "01-KM.Rmd"
   - "02-FCM.Rmd"
   - "03-evalC.Rmd"
-  - "04-references.Rmd"
+  - "20-references.Rmd"
