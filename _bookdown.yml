@@ -4,8 +4,8 @@ language:
   label:
     fig: "Gambar "
     tab: "Tabel "
-    thm: "Teorema "
-    lem: "Lemma "
+    thm: "Persamaan "
+    lem: "Formula "
     cor: "inference "
     prp: "proposition "
     def: "Definisi "
@@ -25,5 +25,6 @@ rmd_files:
   - "index.Rmd"
   - "01-KM.Rmd"
   - "02-FCM.Rmd"
-  - "03-evalC.Rmd"
+  - "03-HC.Rmd"
+  - "19-evalC.Rmd"
   - "20-references.Rmd"
