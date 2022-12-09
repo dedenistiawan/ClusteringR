@@ -13,7 +13,7 @@ Fuzzy c-means merupakan metode yang dikenal baik dalam mendeteksi klaster [@pime
 Klastering dengan algoritma Fuzzy C-Means didasarkan pada teori logika fuzzy yang diperkenalkan oleh Lotfi Zadeh pada tahun 1965 dengan nama himpunan fuzzy (fuzzy set). Fuzzy C-Means Clustering pertama kali diperkenalkan oleh Dun pada (1973) dan diperbaiki oleh Bezdek [@bezdek1984]. Dalam teori fuzzy, keangotaan sebuah data diberikan dengan suatu nilai derajat keanggotaan yang jangkauan nilainya 0 sampai 1. Semakin tinggi nilai derajat keanggotaannya maka semakin tinggi nilai keanggotaan sebuah data dalam suatu kelompok dan semakin kecil nilai derajat keanggotaannya maka semakin rendah nilai keanggotaan sebuah data dalam suatu kelompok.
 
 Asumsikan terdapat sejumlah data dalam dataset $X$ yang berisi $n$ data yang 
-dinotasikan $X={x_1,x_2, …,x_n}$, dimana setiap data mempunyai fitur $r$ dimensi: $x_i1, x_i2, ..., x_ir$, dinotasikan $x_i={x_i1, x_i2, ..., x_ir}$. Ada sejumlah klaster $C$ dengan centroid: $C_1, C_2, ..., C_k$, dimana $k$ adalah jumlah klaster. Setiap data mempunyai derajat keanggotaan pada setiap klaster, dinyatakan dengan $u_i_j$, dengan nilai diantara 0 dan 1, $i$ menyatakan data $x_i$ dan $j$ menyatakan klaster $c_j$. Jumlah nilai derajat keanggotaan setiap data $x_i$ selalu sama dengan 1, yang diformulasikan pada persamaan berikut:
+dinotasikan $X={x_1,x_2, …,x_n}$, dimana setiap data mempunyai fitur $r$ dimensi: $x_{i1}, x_{i2}, ..., x_{ir}$, dinotasikan $x_i={x_i1, x_i2, ..., x_ir}$. Ada sejumlah klaster $C$ dengan centroid: $C_1, C_2, ..., C_k$, dimana $k$ adalah jumlah klaster. Setiap data mempunyai derajat keanggotaan pada setiap klaster, dinyatakan dengan $u_{ij}$, dengan nilai diantara 0 dan 1, $i$ menyatakan data $x_i$ dan $j$ menyatakan klaster $c_j$. Jumlah nilai derajat keanggotaan setiap data $x_i$ selalu sama dengan 1, yang diformulasikan pada persamaan berikut:
 
 ```{theorem}
 $$\sum_{j=1}^k u_{i j}=1$$
@@ -30,13 +30,13 @@ Cara kerja dari fuzzy c-means clustering dalam mengelompokkan datanya adalah seb
 3.  Dalam menghitung nilai centroid, kita menggunakan formula berikut:
 
 ```{lemma}
-$$C_j = \frac{\sum u_{ij}^mx}{\sum u_{ij}^m}$$
+$$C_j=\frac{\sum{{\mu }^m_{ij}}x}{\sum{{\mu }^m_{ij}}}$$
 ```
 
 4.  Menghtung kembali nilai proporsi untuk setiap data poin untuk masuk pada setiap cluster. formula yang digunakan yaitu sebagai berikut:
 
 ```{lemma}
-$$u_{ij}^m = \frac{1}{\sum (\frac{|x_i - c_j|}{|x_i - c_k|})^\frac{2}{m-1}}$$
+$${\mu }^m_{ij}=\frac{1}{\sum{{\left(\frac{\left|x_i-c_j\right|}{\left|x_i-c_k\right|}\right)}^{\frac{2}{m-1}}}}$$
 ```
 
 ## Eksperimeen Fuzzy C-Means
