@@ -135,15 +135,7 @@ xlab = "Objects", ylab = "Distance", sub = "")
 ```{r}
 fviz_dend(hc, cex = 0.5, horiz = TRUE)
 ```
-```{r}
-fviz_dend(hc, k =2, # Cut in four groups
-cex = 0.5, # label size
-k_colors = c("#E7B800", "#FC4E07"),
-color_labels_by_k = TRUE, # color labels by groups
-rect = TRUE, # Add rectangle around groups
-rect_border = c("#E7B800", "#FC4E07"),
-rect_fill = TRUE)
-```
+
 ```{r}
 fviz_dend(hc, k =2,
 # Cut in four groups
