@@ -1,12 +1,12 @@
-This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.12.4)  24 FEB 2023 11:42
+This is XeTeX, Version 3.141592653-2.6-0.999994 (TeX Live 2022) (preloaded format=xelatex 2022.12.4)  8 MAY 2023 13:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **ClusteringR.tex
 (./ClusteringR.tex
 LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2022-11-02> (c:/Users/Deden Istiawan/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/elegantbook/elegantbook.cls
-Document Class: elegantbook 2022/04/09 v4.3 ElegantBook document class
+L3 programming layer <2022-11-02> (./elegantbook.cls
+Document Class: elegantbook 2022/12/31 v4.5 ElegantBook document class
 (c:/Users/Deden Istiawan/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 (c:/Users/Deden Istiawan/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/keyval.sty
@@ -1013,8 +1013,8 @@ Library (tcolorbox): 'tcbfitting.code.tex' version '5.1.1'
 \tcb@upperfitdim=\dimen315
 \tcb@cur@hbadness=\count495
 ))
-\c@tcb@cnt@definition=\count496
-\c@tcb@cnt@theorem=\count497
+\c@tcb@cnt@theorem=\count496
+\c@tcb@cnt@definition=\count497
 \c@tcb@cnt@postulate=\count498
 \c@tcb@cnt@axiom=\count499
 \c@tcb@cnt@corollary=\count500
@@ -1138,7 +1138,7 @@ Package tocloft Info: The document has chapter divisions on input line 51.
 \cfttabnumwidth=\skip132
 )
 LaTeX Font Info:    Font shape `TU/TeXGyreTermesX(0)/b/n' will be
-(Font)              scaled to size 10.0pt on input line 1428.
+(Font)              scaled to size 10.0pt on input line 1480.
 ) (c:/Users/Deden Istiawan/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
 Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
@@ -1534,7 +1534,7 @@ File: 03-HC_files/figure-latex/unnamed-chunk-8-1.pdf Graphic file (type pdf)
 File: 03-HC_files/figure-latex/unnamed-chunk-9-1.pdf Graphic file (type pdf)
 <use 03-HC_files/figure-latex/unnamed-chunk-9-1.pdf>
 [26]
-Overfull \hbox (2.50662pt too wide) in paragraph at lines 1360--1360
+Overfull \hbox (2.50662pt too wide) in paragraph at lines 1345--1345
 []\TU/SourceCodePro(0)/m/n/10 ## Suggestions and bug-reports can be submitted at: https://github.com/talgalili/dendextend/issues[] 
  []
 
@@ -1588,10 +1588,10 @@ Package logreq Info: Writing requests to 'ClusteringR.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 45155 strings out of 477640
- 955778 string characters out of 5838874
- 1906044 words of memory out of 5000000
- 65405 multiletter control sequences out of 15000+600000
+ 45167 strings out of 477640
+ 955848 string characters out of 5838874
+ 1906482 words of memory out of 5000000
+ 65418 multiletter control sequences out of 15000+600000
  492031 words of font info for 118 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  99i,11n,99p,1184b,1300s stack positions out of 10000i,1000n,20000p,200000b,200000s

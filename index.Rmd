@@ -5,6 +5,8 @@ site: bookdown::bookdown_site
 output:
   pdf_document: default
   word_document: default
+  html_document:
+    df_print: paged
 bibliography: book.bib
 colorlinks: yes
 link-citations: yes
