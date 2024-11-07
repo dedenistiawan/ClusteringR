@@ -16,7 +16,7 @@ language:
     solution: "untie "
   ui:
     edit: "Edit"
-    #chapter_name: ["Bab "]
+    chapter_name: ["Bab "]
 
 new_session: yes
 before_chapter_script: _common.R

@@ -3,8 +3,8 @@ title: "Analisis Cluster dengan R"
 author: "Deden Istiawan"
 site: bookdown::bookdown_site
 output:
-  pdf_document: default
   word_document: default
+  pdf_document: default
   html_document:
     df_print: paged
 bibliography: book.bib
@@ -50,13 +50,14 @@ R adalah bahasa pemrograman dan software bebas yang dikembangkan oleh Ross Ihaka
 Untuk menginstall R, kamu tidak memerlukan budget untuk membeli lisensi. R merupakan aplikasi open source sehingga dapat kamu unduh secara gratis di laman aslinya. Berikut langkah penginstallan mulai dari cara download hingga R siap digunakan. Pertama buka [Halaman R Project](https://cran.r-project.org/). Pilih installer sesuai sistem operasi. Misalnya pilih **Download R for Windows** dan pilih **install R for the first time**. Tunggu proses unduh instaler dan jika sudah 100% terunduh klik file tersebut untuk mulai install R. setelah R berhasil diinstall langkah selanjutnya adalah menginstall program [RStudio](https://posit.co/download/rstudio-desktop/). Pada tahap ini kita akan install RStudio yaitu merupakan IDE yang umumnya digunakan untuk pemrograman R RStudio akan sangat membantu untuk melakukan coding R dan lainnya. Kita bisa langsung download installer versi terbaru atau jika ingin menggunakan versi sebelumnya bisa pilih all installer.
 
 ## Menginstal dan memuat R packages
+
 Setelah selesai instalI [R](https://cran.r-project.org/) dan [RStudio](https://posit.co/download/rstudio-desktop/), serta memahami bagaimana menggunakannya, proses selanjutnya adalah instal R package. Kita dapat langsung melakukan instalasi R package yang sudah ada di [CRAN](https://cran.r-project.org/) repository (mayoritas R package ada di sini) dengan menuliskan perintah **install.packages(“nama package”)** pada RStudio atau di Console. Kita harus terhubung dengan koneksi internet untuk dapat instal package. Misal, kita instal package [*cluster*](https://cran.r-project.org/web/packages/cluster/index.html).
 
 ```{r eval=FALSE}
 install.packages("cluster")
 ```
 
-selain melalui [CRAN](https://cran.r-project.org/) repository, intall packages juga dapat melaui [Github](https://github.com/). Anda harus terlebih dahulu harus menginstal [devtools](https://cran.r-project.org/web/packages/devtools/index.html) jika Anda belum menginstalnya di komputer Anda. Misalnya, kode R berikut menginstal paket factoextra R versi terbaru yang dikembangkan oleh A. Kassambara (https://github.com/kassambara/facoextra) untuk analisis data multivariat dan visualisasi yang elegan.
+selain melalui [CRAN](https://cran.r-project.org/) repository, intall packages juga dapat melaui [Github](https://github.com/). Anda harus terlebih dahulu harus menginstal [devtools](https://cran.r-project.org/web/packages/devtools/index.html) jika Anda belum menginstalnya di komputer Anda. Misalnya, kode R berikut menginstal paket factoextra R versi terbaru yang dikembangkan oleh A. Kassambara (<https://github.com/kassambara/facoextra>) untuk analisis data multivariat dan visualisasi yang elegan.
 
 ```{r eval=FALSE}
 install.packages("devtools")
@@ -72,7 +73,6 @@ Setelah instalasi, pertama-tama Anda harus memuat paket untuk menggunakan fungsi
 ```{r eval=FALSE}
 library(cluster)
 ```
-
 
 ```{lemma, chf-pdf}
 For any two random variables $X_1$, $X_2$, they both have the same probability distribution if and only if
