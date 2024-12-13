@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>2 Algoritma K-Means | Analisis Cluster dengan R</title>
+  <meta name="description" content="Analisis Cluster dengan menggunakan Bahasa Pemrograman R" />
+  <meta name="generator" content="bookdown 0.30 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="2 Algoritma K-Means | Analisis Cluster dengan R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Analisis Cluster dengan menggunakan Bahasa Pemrograman R" />
+  <meta name="github-repo" content="dedenistiawan/CLusteringR" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="2 Algoritma K-Means | Analisis Cluster dengan R" />
+  
+  <meta name="twitter:description" content="Analisis Cluster dengan menggunakan Bahasa Pemrograman R" />
+  
+
+<meta name="author" content="Deden Istiawan" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="02-prob.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: {
+        Macros: {
+          bm: ["{\\boldsymbol #1}",1],
+        },
+        extensions: ["cancel.js"]
+      }
+    });
+</script>
+
+<!-- add line break after theorem title -->
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    for (let s of document.querySelectorAll("span.theorem, span.lemma, span.proposition, span.corollary")) {
+      s.insertAdjacentHTML('afterend', '<br style="line-height:2px;"/>');
+    }
+  });
+</script>
+
+<!-- check if --themcolor in style.css matches one of elegantbook theme colors. If so, generates the color palette  -->
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    const cssroot = document.querySelector(':root');
+    let theme_color = getComputedStyle(document.documentElement).getPropertyValue('--themecolor').trim();
+  
+    // blue is the default option
+
+    switch (theme_color) {
+      case 'green': 
+        cssroot.style.setProperty('--structurecolor', 'rgb(0,120,2)');
+        cssroot.style.setProperty('--main', 'rgb(70,70,70)');
+        cssroot.style.setProperty('--mainbg', 'rgba(0,166,82,0.05)');
+        cssroot.style.setProperty('--second', 'rgb(115,45,2)');
+        cssroot.style.setProperty('--secondbg', 'rgba(115,45,2,0.05)');
+        cssroot.style.setProperty('--third', 'rgb(0,80,80)');
+        cssroot.style.setProperty('--thirdbg', 'rgba(0,80,80,0.05)');
+      break;
+      case 'cyan':
+        cssroot.style.setProperty('--structurecolor', 'rgb(31,186,190)');
+        cssroot.style.setProperty('--main', 'rgb(59,180,5)');
+        cssroot.style.setProperty('--mainbg', 'rgba(59,180,5,0.05)');
+        cssroot.style.setProperty('--second', 'rgb(175,153,8)');
+        cssroot.style.setProperty('--secondbg', 'rgba(175,153,8,0.05)');
+        cssroot.style.setProperty('--third', 'rgb(244,105,102)');
+        cssroot.style.setProperty('--thirdbg', 'rgba(244,105,102,0.05)');
+      break;
+      case 'gray':
+        cssroot.style.setProperty('--structurecolor', 'rgb(150,150,150)');
+        cssroot.style.setProperty('--main', 'rgb(150,150,150)');
+        cssroot.style.setProperty('--mainbg', 'rgba(150,150,150,0.05)');
+        cssroot.style.setProperty('--second', 'rgb(150,150,150)');
+        cssroot.style.setProperty('--secondbg', 'rgba(150,150,150,0.05)');
+        cssroot.style.setProperty('--third', 'rgb(150,150,150)');
+        cssroot.style.setProperty('--thirdbg', 'rgba(150,150,150,0.05)');
+      break;
+      case 'black':
+        cssroot.style.setProperty('--structurecolor', 'rgb(0,0,0)');
+        cssroot.style.setProperty('--main', 'rgb(0,0,0)');
+        cssroot.style.setProperty('--mainbg', 'rgba(0,0,0,0.05)');
+        cssroot.style.setProperty('--second', 'rgb(0,0,0)');
+        cssroot.style.setProperty('--secondbg', 'rgba(0,0,0,0.05)');
+        cssroot.style.setProperty('--third', 'rgb(0,0,0)');
+        cssroot.style.setProperty('--thirdbg', 'rgba(0,0,0,0.05)');
+      break;
+    default:
+        cssroot.style.setProperty('--structurecolor', 'rgb(60,113,183)');
+        cssroot.style.setProperty('--main', 'rgb(0,166,82)');
+        cssroot.style.setProperty('--mainbg', 'rgba(0,166,82,0.05)');
+        cssroot.style.setProperty('--second', 'rgb(255,134,24)');
+        cssroot.style.setProperty('--secondbg', 'rgba(255,134,24,0.05)');
+        cssroot.style.setProperty('--third', 'rgb(0,174,247)');
+        cssroot.style.setProperty('--thirdbg', 'rgba(0,174,247,0.05)');
+    }
+  });
+  </script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Analisis Cluster dengan R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Pengantar Analisis Cluster</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#apa-itu-analisis-cluster"><i class="fa fa-check"></i><b>1.1</b> Apa itu Analisis Cluster?</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#apa-itu-bahasa-pemrograman-r"><i class="fa fa-check"></i><b>1.2</b> Apa itu Bahasa Pemrograman R?</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#install-r-dan-rstudio"><i class="fa fa-check"></i><b>1.3</b> Install R dan RStudio</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#menginstal-dan-memuat-r-packages"><i class="fa fa-check"></i><b>1.4</b> Menginstal dan memuat R packages</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#math-formular"><i class="fa fa-check"></i><b>1.5</b> Lorem Ipsum5</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#custom-block"><i class="fa fa-check"></i><b>1.6</b> Lorem Ipsum6</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="01-partition.html"><a href="01-partition.html"><i class="fa fa-check"></i><b>2</b> Algoritma K-Means</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="01-partition.html"><a href="01-partition.html#pengantar-algoritam-k-means"><i class="fa fa-check"></i><b>2.1</b> Pengantar Algoritam K-Means</a></li>
+<li class="chapter" data-level="2.2" data-path="01-partition.html"><a href="01-partition.html#eksperimen-algoritma-k-means"><i class="fa fa-check"></i><b>2.2</b> Eksperimen Algoritma K-Means</a>
+<ul>
+<li class="chapter" data-level="2.2.1" data-path="01-partition.html"><a href="01-partition.html#data"><i class="fa fa-check"></i><b>2.2.1</b> Data</a></li>
+<li class="chapter" data-level="2.2.2" data-path="01-partition.html"><a href="01-partition.html#memeriksa-missing-value"><i class="fa fa-check"></i><b>2.2.2</b> Memeriksa Missing Value</a></li>
+<li class="chapter" data-level="2.2.3" data-path="01-partition.html"><a href="01-partition.html#visualisasi-matriks-jarak"><i class="fa fa-check"></i><b>2.2.3</b> Visualisasi Matriks jarak</a></li>
+<li class="chapter" data-level="2.2.4" data-path="01-partition.html"><a href="01-partition.html#estimasi-jumlah-cluster-optimal"><i class="fa fa-check"></i><b>2.2.4</b> Estimasi Jumlah <em>Cluster</em> Optimal</a></li>
+<li class="chapter" data-level="2.2.5" data-path="01-partition.html"><a href="01-partition.html#membuat-plot-cluster"><i class="fa fa-check"></i><b>2.2.5</b> Membuat Plot <em>Cluster</em></a></li>
+<li class="chapter" data-level="2.2.6" data-path="01-partition.html"><a href="01-partition.html#metode-elbow"><i class="fa fa-check"></i><b>2.2.6</b> Metode Elbow</a></li>
+<li class="chapter" data-level="2.2.7" data-path="01-partition.html"><a href="01-partition.html#metode-silhouette"><i class="fa fa-check"></i><b>2.2.7</b> Metode Silhouette</a></li>
+<li class="chapter" data-level="2.2.8" data-path="01-partition.html"><a href="01-partition.html#eksperimen-k-means-clustering"><i class="fa fa-check"></i><b>2.2.8</b> Eksperimen K-Means Clustering</a></li>
+<li class="chapter" data-level="2.2.9" data-path="01-partition.html"><a href="01-partition.html#visualisasi-hasil-clustering"><i class="fa fa-check"></i><b>2.2.9</b> Visualisasi Hasil <em>clustering</em></a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="02-prob.html"><a href="02-prob.html"><i class="fa fa-check"></i><b>3</b> Model Probabilistik Clustering</a></li>
+<li class="chapter" data-level="4" data-path="03-evalC.html"><a href="03-evalC.html"><i class="fa fa-check"></i><b>4</b> Evaluasi Analisis Cluster</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="03-evalC.html"><a href="03-evalC.html#including-plots"><i class="fa fa-check"></i><b>4.1</b> Including Plots</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="04-references.html"><a href="04-references.html"><i class="fa fa-check"></i>Referensi</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Analisis Cluster dengan R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="algoritma-k-means" class="section level1 hasAnchor" number="2">
+<h1><span class="header-section-number">2</span> Algoritma K-Means<a href="01-partition.html#algoritma-k-means" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<style>
+body{
+text-align: justify}
+</style>
+<div id="pengantar-algoritam-k-means" class="section level2 hasAnchor" number="2.1">
+<h2><span class="header-section-number">2.1</span> Pengantar Algoritam K-Means<a href="01-partition.html#pengantar-algoritam-k-means" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>K-means merupakan salah satu metode hard partition yang banyak digunakan untuk pengelompokan data. Algoritma K-means adalah dasar pengelompokan metode partisi yang dipublikasikan oleh Lloyd dari Bell Telephone Laboratories pada tahun 1957. Penelitian pada K-means dapat ditelusuri kembali ke pertengahan abad yang lalu, yang dilakukan oleh berbagai peneliti diseluruh disiplin ilmu yang berbeda terutama oleh Lloyd (1957), Forgey (1965), Friedman dan Robin (1967) dan MacQueen (1967). K-means dapat didefinisikan sebagai algoritma klastering yang mengelompokan data ke dalam k klaster berdasarkan jarak terdekat data dengan pusat klaster. Algoritma K-means sangat efisien untuk mengelompokan dataset yang besar, kemudahan dalam pengaplikasiannya dan metode yang efisien dalam hal komputasi, menjadi alasan utama popularitas K-means, meskipun telah diusulkan lebih dari 50 tahun yang lalu.</p>
+<p>Algoritma K-means mengelompokan objek ke dalam kelompok sehingga objek dalam satu klaster memiliki kemiripan yang tinggi dibandingkan dengan objek di dalam klaster yang berbeda. K-means dimulai dengan menentukan jumlah klaster sebanyak k, kemudian membangkitkan k pusat klaster secara acak. Selanjutnya setiap objek akan dikelompokan berdasarkan jarak terdekat dengan pusat klaster, pusat klaster diperbaharui berdasarkan titik data dalam setiap klaster. Proses ini diulangi sampai kriteria konvergen terpenuhi. Berikut ini adalah tahapan dari algoritma K-means:</p>
+<ol style="list-style-type: decimal">
+<li><p>Menentukan nilai k sebagai jumlah klaster yang dibentuk.</p></li>
+<li><p>Memilih k pusat klaster secara acak untuk menjadi pusat klaster awal.</p></li>
+<li><p>Alokasikan semua data ke pusat klaster terdekat dengan matrik jarak.</p></li>
+<li><p>Hitung kembali pusat klaster baru berdasarkan data yang mengikuti klaster masing-masing.</p></li>
+<li><p>Ulangi langkah 3 dan 4 hingga kondisi konvergen tercapai atau tidak ada data yang berpindah dari satu klaster ke klaster yang lainnya.</p></li>
+</ol>
+</div>
+<div id="eksperimen-algoritma-k-means" class="section level2 hasAnchor" number="2.2">
+<h2><span class="header-section-number">2.2</span> Eksperimen Algoritma K-Means<a href="01-partition.html#eksperimen-algoritma-k-means" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Pada eksprimen ini algoritma K-Means akan digunakan untuk mengelompokan data kemiskinan di Jawa Tengah yang diambil dari website Tim Percepatan Penanggulangan Kemiskinan <a href="https://www.tnp2k.go.id/">(TNP2K)</a></p>
+<div id="data" class="section level3 hasAnchor" number="2.2.1">
+<h3><span class="header-section-number">2.2.1</span> Data<a href="01-partition.html#data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Package <strong>readr</strong> menyiapkan fungsi <a href="https://readr.tidyverse.org/reference/read_delim.html"><code>read_csv()</code></a> untuk import data dari file CSV. Pada kasus ini digunakan data <a href="https://github.com/dedenistiawan/Dataset/blob/main/BDT.csv">Data 40% Kemiskinan di jawa Tengah</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="01-partition.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span> (readr)</span>
+<span id="cb1-2"><a href="01-partition.html#cb1-2" aria-hidden="true" tabindex="-1"></a>urlfile <span class="ot">=</span> <span class="st">&quot;https://raw.githubusercontent.com/dedenistiawan/Dataset/main/Basis%20Data%20Terpadu%20Jateng.csv&quot;</span></span>
+<span id="cb1-3"><a href="01-partition.html#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="01-partition.html#cb1-4" aria-hidden="true" tabindex="-1"></a>data<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="fu">url</span>(urlfile), <span class="at">row.names =</span> <span class="st">&quot;Kabupaten&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="01-partition.html#cb2-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(</span>
+<span id="cb2-2"><a href="01-partition.html#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(data, <span class="dv">10</span>), <span class="at">caption =</span> <span class="st">&#39;Basis Data Terpadu Jawa Tengah&#39;</span>,</span>
+<span id="cb2-3"><a href="01-partition.html#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">booktabs =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<table>
+<caption><span id="tab:nice-tab">Tabel 2.1: </span>Basis Data Terpadu Jawa Tengah</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">X1</th>
+<th align="right">X2</th>
+<th align="right">X3</th>
+<th align="right">X4</th>
+<th align="right">X5</th>
+<th align="right">X6</th>
+<th align="right">X7</th>
+<th align="right">X8</th>
+<th align="right">X9</th>
+<th align="right">X10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CILACAP</td>
+<td align="right">5.19</td>
+<td align="right">5.67</td>
+<td align="right">5.08</td>
+<td align="right">5.44</td>
+<td align="right">5.22</td>
+<td align="right">6.05</td>
+<td align="right">11.47</td>
+<td align="right">9.78</td>
+<td align="right">5.55</td>
+<td align="right">5.12</td>
+</tr>
+<tr class="even">
+<td>BANYUMAS</td>
+<td align="right">5.71</td>
+<td align="right">4.47</td>
+<td align="right">5.18</td>
+<td align="right">5.51</td>
+<td align="right">5.02</td>
+<td align="right">6.21</td>
+<td align="right">7.39</td>
+<td align="right">6.96</td>
+<td align="right">5.98</td>
+<td align="right">8.22</td>
+</tr>
+<tr class="odd">
+<td>PURBALINGGA</td>
+<td align="right">3.30</td>
+<td align="right">2.19</td>
+<td align="right">3.80</td>
+<td align="right">3.13</td>
+<td align="right">3.73</td>
+<td align="right">3.34</td>
+<td align="right">8.71</td>
+<td align="right">7.41</td>
+<td align="right">3.21</td>
+<td align="right">4.65</td>
+</tr>
+<tr class="even">
+<td>BANJARNEGARA</td>
+<td align="right">2.73</td>
+<td align="right">2.34</td>
+<td align="right">3.76</td>
+<td align="right">2.80</td>
+<td align="right">2.57</td>
+<td align="right">2.99</td>
+<td align="right">3.31</td>
+<td align="right">5.45</td>
+<td align="right">4.21</td>
+<td align="right">6.05</td>
+</tr>
+<tr class="odd">
+<td>KEBUMEN</td>
+<td align="right">4.17</td>
+<td align="right">2.55</td>
+<td align="right">3.26</td>
+<td align="right">4.16</td>
+<td align="right">3.15</td>
+<td align="right">4.15</td>
+<td align="right">4.30</td>
+<td align="right">9.29</td>
+<td align="right">4.61</td>
+<td align="right">4.34</td>
+</tr>
+<tr class="even">
+<td>PURWOREJO</td>
+<td align="right">1.87</td>
+<td align="right">2.12</td>
+<td align="right">1.48</td>
+<td align="right">3.05</td>
+<td align="right">1.78</td>
+<td align="right">1.83</td>
+<td align="right">5.00</td>
+<td align="right">4.90</td>
+<td align="right">3.12</td>
+<td align="right">2.09</td>
+</tr>
+<tr class="odd">
+<td>WONOSOBO</td>
+<td align="right">2.13</td>
+<td align="right">1.95</td>
+<td align="right">3.00</td>
+<td align="right">1.78</td>
+<td align="right">1.62</td>
+<td align="right">2.06</td>
+<td align="right">0.45</td>
+<td align="right">2.32</td>
+<td align="right">3.57</td>
+<td align="right">0.84</td>
+</tr>
+<tr class="even">
+<td>MAGELANG</td>
+<td align="right">3.95</td>
+<td align="right">3.01</td>
+<td align="right">4.22</td>
+<td align="right">4.15</td>
+<td align="right">3.01</td>
+<td align="right">3.64</td>
+<td align="right">1.44</td>
+<td align="right">3.35</td>
+<td align="right">5.69</td>
+<td align="right">3.67</td>
+</tr>
+<tr class="odd">
+<td>BOYOLALI</td>
+<td align="right">2.19</td>
+<td align="right">3.07</td>
+<td align="right">1.61</td>
+<td align="right">2.74</td>
+<td align="right">2.11</td>
+<td align="right">1.82</td>
+<td align="right">1.71</td>
+<td align="right">2.34</td>
+<td align="right">3.41</td>
+<td align="right">1.55</td>
+</tr>
+<tr class="even">
+<td>KLATEN</td>
+<td align="right">3.84</td>
+<td align="right">5.15</td>
+<td align="right">1.93</td>
+<td align="right">4.64</td>
+<td align="right">4.04</td>
+<td align="right">3.78</td>
+<td align="right">8.71</td>
+<td align="right">4.45</td>
+<td align="right">3.99</td>
+<td align="right">3.09</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="memeriksa-missing-value" class="section level3 hasAnchor" number="2.2.2">
+<h3><span class="header-section-number">2.2.2</span> Memeriksa Missing Value<a href="01-partition.html#memeriksa-missing-value" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="01-partition.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(data))</span></code></pre></div>
+<pre><code>##  X1  X2  X3  X4  X5  X6  X7  X8  X9 X10 
+##   0   0   0   0   0   0   0   0   0   0</code></pre>
+<p>Hasil output di atas menunjukan bahwa tidak <em>missing value</em> di semua variabel</p>
+</div>
+<div id="visualisasi-matriks-jarak" class="section level3 hasAnchor" number="2.2.3">
+<h3><span class="header-section-number">2.2.3</span> Visualisasi Matriks jarak<a href="01-partition.html#visualisasi-matriks-jarak" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="01-partition.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot Disatance</span></span>
+<span id="cb5-2"><a href="01-partition.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb5-3"><a href="01-partition.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span>
+<span id="cb5-4"><a href="01-partition.html#cb5-4" aria-hidden="true" tabindex="-1"></a>distance <span class="ot">&lt;-</span> <span class="fu">get_dist</span>(data)</span>
+<span id="cb5-5"><a href="01-partition.html#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_dist</span>(distance, <span class="at">gradient =</span> <span class="fu">list</span>(<span class="at">low =</span> <span class="st">&quot;#00AFBB&quot;</span>, <span class="at">mid =</span> <span class="st">&quot;white&quot;</span>, <span class="at">high =</span> <span class="st">&quot;#FC4E07&quot;</span>))</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="01-partition_files/figure-html/unnamed-chunk-2-1.png" alt="Matrik Jarak" width="80%" />
+<p class="caption">
+Gambar 2.1: Matrik Jarak
+</p>
+</div>
+<p>Matriks jarak ini berfungsi untuk mengukur jarak antar variabel, semakin merah warnanya maka semakin jauh jarak antar variabel dan semakin biru semakin dekat jarak antar variabel.</p>
+</div>
+<div id="estimasi-jumlah-cluster-optimal" class="section level3 hasAnchor" number="2.2.4">
+<h3><span class="header-section-number">2.2.4</span> Estimasi Jumlah <em>Cluster</em> Optimal<a href="01-partition.html#estimasi-jumlah-cluster-optimal" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Dalam metode k-means banyaknya klaster ditentukan sendiri oleh pengguna. Maka dari itu perlu dicari jumlah klaster yang optimum yang dapat mengelompokkan objek dengan baik (Perlu diketahui bahwa metode ini relatif subjektif). Salah satu metode yang digunakan adalah Elbow Plot. Elbow Plot merupakan plot antara banyak klaster dengan total within-cluster variation (total dari simpangan per kluster). Banyak klaster yang dipilih adalah bagian “siku” atau titik dimana terdapat penurunan yang tajam sebelum titik tersebut dan disusul penurunan yang tidak tajam setelah titik tersebut. Hal ini karena penambahan jumlah klaster tidak membawa pengaruh banyak atas variasi yang ada di dalam klaster tersebut.</p>
+</div>
+<div id="membuat-plot-cluster" class="section level3 hasAnchor" number="2.2.5">
+<h3><span class="header-section-number">2.2.5</span> Membuat Plot <em>Cluster</em><a href="01-partition.html#membuat-plot-cluster" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Jumlah klaster yang dibentuk mulai dari 2 sampai 5, untuk melihat sebaran data pada masing-masing <em>cluster</em></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="01-partition.html#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#use several different values of k</span></span>
+<span id="cb6-2"><a href="01-partition.html#cb6-2" aria-hidden="true" tabindex="-1"></a>k2 <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data, <span class="at">centers =</span> <span class="dv">2</span>, <span class="at">nstart =</span> <span class="dv">25</span>)</span>
+<span id="cb6-3"><a href="01-partition.html#cb6-3" aria-hidden="true" tabindex="-1"></a>k3 <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data, <span class="at">centers =</span> <span class="dv">3</span>, <span class="at">nstart =</span> <span class="dv">25</span>)</span>
+<span id="cb6-4"><a href="01-partition.html#cb6-4" aria-hidden="true" tabindex="-1"></a>k4 <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data, <span class="at">centers =</span> <span class="dv">4</span>, <span class="at">nstart =</span> <span class="dv">25</span>)</span>
+<span id="cb6-5"><a href="01-partition.html#cb6-5" aria-hidden="true" tabindex="-1"></a>k5 <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data, <span class="at">centers =</span> <span class="dv">5</span>, <span class="at">nstart =</span> <span class="dv">25</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="01-partition.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plots to compare</span></span>
+<span id="cb7-2"><a href="01-partition.html#cb7-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">fviz_cluster</span>(k2, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>, <span class="at">data =</span> data) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;k = 2&quot;</span>)</span>
+<span id="cb7-3"><a href="01-partition.html#cb7-3" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">fviz_cluster</span>(k3, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>,  <span class="at">data =</span> data) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;k = 3&quot;</span>)</span>
+<span id="cb7-4"><a href="01-partition.html#cb7-4" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">fviz_cluster</span>(k4, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>,  <span class="at">data =</span> data) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;k = 4&quot;</span>)</span>
+<span id="cb7-5"><a href="01-partition.html#cb7-5" aria-hidden="true" tabindex="-1"></a>p4 <span class="ot">&lt;-</span> <span class="fu">fviz_cluster</span>(k5, <span class="at">geom =</span> <span class="st">&quot;point&quot;</span>,  <span class="at">data =</span> data) <span class="sc">+</span> <span class="fu">ggtitle</span>(<span class="st">&quot;k = 5&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="01-partition.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span>
+<span id="cb8-2"><a href="01-partition.html#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, p3, p4, <span class="at">nrow =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-5"></span>
+<img src="01-partition_files/figure-html/unnamed-chunk-5-1.png" alt="Plot Jumlah Cluster" width="80%" />
+<p class="caption">
+Gambar 2.2: Plot Jumlah Cluster
+</p>
+</div>
+</div>
+<div id="metode-elbow" class="section level3 hasAnchor" number="2.2.6">
+<h3><span class="header-section-number">2.2.6</span> Metode Elbow<a href="01-partition.html#metode-elbow" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Metode Elbow merupakan suatu metode yang digunakan untuk menghasilkan informasi dalam menentukan jumlah cluster terbaik dengan cara melihat persentase hasil perbandingan antara jumlah cluster yang akan membentuk siku pada suatu titik. Metode ini memberikan ide/gagasan dengan cara memilih nilai cluster dan kemudian menambah nilai cluster tersebut untuk dijadikan model data dalam penentuan cluster terbaik. Dan selain itu persentase perhitungan yang dihasilkan menjadi pembanding antara jumlah cluster yang ditambah. Hasil persentase yang berbeda dari setiap nilai cluster dapat ditunjukan dengan menggunakan grafik sebagai sumber informasinya. Jika nilai cluster pertama dengan nilai cluster kedua memberikan sudut dalam grafik atau nilainya mengalami penurunan paling besar maka nilai cluster tersebut yang terbaik.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="01-partition.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Determining number Optimal Clusters</span></span>
+<span id="cb9-2"><a href="01-partition.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="do">##Elbow Method</span></span>
+<span id="cb9-3"><a href="01-partition.html#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb9-4"><a href="01-partition.html#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(factoextra)</span>
+<span id="cb9-5"><a href="01-partition.html#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_nbclust</span>(data, kmeans, <span class="at">method =</span> <span class="st">&quot;wss&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-6"><a href="01-partition.html#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">2</span>, <span class="at">linetype =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-6"></span>
+<img src="01-partition_files/figure-html/unnamed-chunk-6-1.png" alt="Plot Jumlah Cluster Metode Elbow" width="80%" />
+<p class="caption">
+Gambar 2.3: Plot Jumlah Cluster Metode Elbow
+</p>
+</div>
+<p>Metode elbow menggunakan nilai total wss (whitin sum square) sebagai penentu 𝐾 optimalnya. Dari gambar di atas terlihat garis mengalami patahan yang membentuk elbow atau siku pada saat 𝐾 = 2. Maka dengan menggunakan metode ini diperoleh 𝐾 optimal pada saat berada di 𝐾 = 2.</p>
+</div>
+<div id="metode-silhouette" class="section level3 hasAnchor" number="2.2.7">
+<h3><span class="header-section-number">2.2.7</span> Metode Silhouette<a href="01-partition.html#metode-silhouette" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Silhouette Coefficient digunakan untuk melihat kualitas dan kekuatan cluster, seberapa baik suatu objek ditempatkan dalam suatu cluster. Metode ini merupakan gabungan dari metode cohesion dan separation.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="01-partition.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">##Average Silhouette Method</span></span>
+<span id="cb10-2"><a href="01-partition.html#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_nbclust</span>(data, kmeans, <span class="at">method =</span> <span class="st">&quot;silhouette&quot;</span>)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
+<img src="01-partition_files/figure-html/unnamed-chunk-7-1.png" alt="Plot Jumlah Cluster Metode silhouette" width="80%" />
+<p class="caption">
+Gambar 2.4: Plot Jumlah Cluster Metode silhouette
+</p>
+</div>
+<p>Pendekatan rata-rata nilai metode silhouette untuk menduga kualitas dari klaster yang terbentuk. Semakin tinggi nilai rata-ratanya maka akan semakin baik. Berdasarkan grafik pada gambar di atas banyak klaster optimal yang terbentuk pada 𝐾 = 2.</p>
+</div>
+<div id="eksperimen-k-means-clustering" class="section level3 hasAnchor" number="2.2.8">
+<h3><span class="header-section-number">2.2.8</span> Eksperimen K-Means Clustering<a href="01-partition.html#eksperimen-k-means-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Dari pendekatan metode elbow dan metode Silhouette di dapatkan jumlah <em>cluster</em> optimal adalah K=2. setelah ini dilakukan eksperimen jumlah K=2</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="01-partition.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Computing k-means clustering</span></span>
+<span id="cb11-2"><a href="01-partition.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#Compute k-means with k = 2</span></span>
+<span id="cb11-3"><a href="01-partition.html#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb11-4"><a href="01-partition.html#cb11-4" aria-hidden="true" tabindex="-1"></a>km.res <span class="ot">&lt;-</span> <span class="fu">kmeans</span>(data, <span class="dv">2</span>, <span class="at">nstart =</span> <span class="dv">25</span>)</span>
+<span id="cb11-5"><a href="01-partition.html#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb11-6"><a href="01-partition.html#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(km.res)</span></code></pre></div>
+<pre><code>## K-means clustering with 2 clusters of sizes 22, 13
+## 
+## Cluster means:
+##         X1       X2       X3       X4       X5       X6       X7
+## 1 1.918182 2.017273 1.675000 1.949091 1.890455 1.728182 1.557273
+## 2 4.446923 4.276923 4.854615 4.394615 4.494615 4.769231 5.056154
+##         X8       X9      X10
+## 1 1.286818 1.952727 1.455455
+## 2 5.515385 4.389231 5.230000
+## 
+## Clustering vector:
+##         CILACAP        BANYUMAS     PURBALINGGA    BANJARNEGARA 
+##               2               2               2               2 
+##         KEBUMEN       PURWOREJO        WONOSOBO        MAGELANG 
+##               2               1               1               2 
+##        BOYOLALI          KLATEN       SUKOHARJO        WONOGIRI 
+##               1               2               1               1 
+##     KARANGANYAR          SRAGEN        GROBOGAN           BLORA 
+##               1               1               2               1 
+##         REMBANG            PATI           KUDUS          JEPARA 
+##               1               2               1               2 
+##         DEMAK          SEMARANG      TEMANGGUNG          KENDAL 
+##               1               1               1               1 
+##          BATANG      PEKALONGAN        PEMALANG           TEGAL 
+##               1               1               2               2 
+##          BREBES   KOTA MAGELANG  KOTA SURAKARTA   KOTA SALATIGA 
+##               2               1               1               1 
+##   KOTA SEMARANG KOTA PEKALONGAN      KOTA TEGAL 
+##               1               1               1 
+## 
+## Within cluster sum of squares by cluster:
+## [1] 262.6536 466.0163
+##  (between_SS / total_SS =  51.3 %)
+## 
+## Available components:
+## 
+## [1] &quot;cluster&quot;      &quot;centers&quot;      &quot;totss&quot;        &quot;withinss&quot;    
+## [5] &quot;tot.withinss&quot; &quot;betweenss&quot;    &quot;size&quot;         &quot;iter&quot;        
+## [9] &quot;ifault&quot;</code></pre>
+<p>Melihat hasil <em>cluster</em> akhir pada setiap kabupaten</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="01-partition.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cluster number for each of the observations</span></span>
+<span id="cb13-2"><a href="01-partition.html#cb13-2" aria-hidden="true" tabindex="-1"></a>km.res<span class="sc">$</span>cluster</span></code></pre></div>
+<pre><code>##         CILACAP        BANYUMAS     PURBALINGGA    BANJARNEGARA 
+##               2               2               2               2 
+##         KEBUMEN       PURWOREJO        WONOSOBO        MAGELANG 
+##               2               1               1               2 
+##        BOYOLALI          KLATEN       SUKOHARJO        WONOGIRI 
+##               1               2               1               1 
+##     KARANGANYAR          SRAGEN        GROBOGAN           BLORA 
+##               1               1               2               1 
+##         REMBANG            PATI           KUDUS          JEPARA 
+##               1               2               1               2 
+##         DEMAK          SEMARANG      TEMANGGUNG          KENDAL 
+##               1               1               1               1 
+##          BATANG      PEKALONGAN        PEMALANG           TEGAL 
+##               1               1               2               2 
+##          BREBES   KOTA MAGELANG  KOTA SURAKARTA   KOTA SALATIGA 
+##               2               1               1               1 
+##   KOTA SEMARANG KOTA PEKALONGAN      KOTA TEGAL 
+##               1               1               1</code></pre>
+<p>Melihat jumlah anggota <em>cluster</em></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="01-partition.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cluster size</span></span>
+<span id="cb15-2"><a href="01-partition.html#cb15-2" aria-hidden="true" tabindex="-1"></a>km.res<span class="sc">$</span>size</span></code></pre></div>
+<pre><code>## [1] 22 13</code></pre>
+</div>
+<div id="visualisasi-hasil-clustering" class="section level3 hasAnchor" number="2.2.9">
+<h3><span class="header-section-number">2.2.9</span> Visualisasi Hasil <em>clustering</em><a href="01-partition.html#visualisasi-hasil-clustering" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="01-partition.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cluster means</span></span>
+<span id="cb17-2"><a href="01-partition.html#cb17-2" aria-hidden="true" tabindex="-1"></a>km.res<span class="sc">$</span>centers</span></code></pre></div>
+<pre><code>##         X1       X2       X3       X4       X5       X6       X7
+## 1 1.918182 2.017273 1.675000 1.949091 1.890455 1.728182 1.557273
+## 2 4.446923 4.276923 4.854615 4.394615 4.494615 4.769231 5.056154
+##         X8       X9      X10
+## 1 1.286818 1.952727 1.455455
+## 2 5.515385 4.389231 5.230000</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="01-partition.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(km.res, <span class="at">data =</span> data)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-11"></span>
+<img src="01-partition_files/figure-html/unnamed-chunk-11-1.png" alt="Plot Hasil Cluster" width="80%" />
+<p class="caption">
+Gambar 2.5: Plot Hasil Cluster
+</p>
+</div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="01-partition.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">fviz_cluster</span>(km.res, <span class="at">data =</span> data,</span>
+<span id="cb20-2"><a href="01-partition.html#cb20-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&quot;#FC4E07&quot;</span>, <span class="st">&quot;#00AFBB&quot;</span>),</span>
+<span id="cb20-3"><a href="01-partition.html#cb20-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">ellipse.type =</span> <span class="st">&quot;euclid&quot;</span>, <span class="co"># Concentration ellipse</span></span>
+<span id="cb20-4"><a href="01-partition.html#cb20-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">star.plot =</span> <span class="cn">TRUE</span>, <span class="co"># Add segments from centroids to items</span></span>
+<span id="cb20-5"><a href="01-partition.html#cb20-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">repel =</span> <span class="cn">TRUE</span>, <span class="co"># Avoid label overplotting (slow)</span></span>
+<span id="cb20-6"><a href="01-partition.html#cb20-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">ggtheme =</span> <span class="fu">theme_minimal</span>())</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-12"></span>
+<img src="01-partition_files/figure-html/unnamed-chunk-12-1.png" alt="Plot Hasil Cluster" width="80%" />
+<p class="caption">
+Gambar 2.6: Plot Hasil Cluster
+</p>
+</div>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="02-prob.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": {}
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/XiangyunHuang/masr/edit/master/01-partition.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": "https://github.com/XiangyunHuang/masr/blob/master/01-partition.Rmd",
+"text": "Check"
+},
+"download": ["ClusteringR.pdf", "ClusteringR.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

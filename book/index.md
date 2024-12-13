@@ -1,0 +1,153 @@
+---
+title: "Analisis Cluster dengan R"
+author: "Deden Istiawan"
+site: bookdown::bookdown_site
+output:
+  word_document: default
+  pdf_document: default
+  html_document:
+    df_print: paged
+bibliography: book.bib
+colorlinks: yes
+link-citations: yes
+mathspec: yes
+graphics: yes
+lot: no
+lof: no
+github-repo: dedenistiawan/CLusteringR
+description: Analisis Cluster dengan menggunakan Bahasa Pemrograman R
+documentclass: elegantbook
+---
+
+\mainmatter
+
+```{=html}
+<style>
+body{
+text-align: justify}
+</style>
+```
+> "Why is that when one man builds a wall, the next needs to to know what's on the other side?"
+>
+> --- Tyrion Lannister-Game of Thrones
+
+# Pengantar Analisis Cluster
+
+## Apa itu Analisis Cluster?
+
+Analisis *Cluster* mungkin salah satu yang paling banyak dipelajari dalam komunitas data mining dan *machine learning* [@bandyopadhyay2011]. Masalah ini telah dipelajari oleh para peneliti dari berbagai disiplin ilmu selama lima dekade. Penerapan analisis *cluster* mencakup berbagai domain masalah seperti teks, multimedia, jejaring sosial, dan data biologis. Clustering adalah topik yang agak beragam, dan algoritma yang mendasarinya sangat bergantung pada domain data dan skenario masalah [@2014clustering]. *Clustering* adalah proses pengelompokan sekumpulan objek data menjadi beberapa kelompok atau *cluster* sehingga objek yang berada di dalam *cluster* memiliki kesamaan yang tinggi, tetapi sangat berbeda dengan objek di *cluster* lain [@HanEtAl11]. Pada buku ini akan dijelaskan konsep dasar dan metode analisis cluster, yang tediri dari: metode pengelompokan partisi dan hirarki, Model Probabilistik dan evaluasi algoritma *clustering*.
+
+Analisis *cluster* atau *clustering* adalah proses mengelompokkan sekumpulan objek data menjadi beberapa kelompok. Setiap subset adalah *cluster*, sehingga objek dalam *cluster* memiliki kemiripan yang sangat tinggi, namun berbeda dengan objek di *cluster* lain. Himpunan *cluster* yang dihasilkan dari analisis *cluster* dapat disebut sebagai *clustering*. Dalam konteks ini, algoritma *clustering* yang berbeda dapat menghasilkan pengelompokan yang berbeda pada dataset yang sama. Oleh karena itu, pengelompokan berguna karena dapat mengarah pada penemuan kelompok yang sebelumnya tidak diketahui dalam data.
+
+## Apa itu Bahasa Pemrograman R?
+
+R adalah bahasa pemrograman dan software bebas yang dikembangkan oleh Ross Ihaka dan Robert Gentleman pada tahun 1993. R memiliki katalog ekstensif metode statistik dan grafis. Ini meliputi algoritma machine learning, regresi linier, time series, inferensi statistik untuk beberapa hal. R tidak hanya diandalkan oleh para akademisi, tetapi juga banyak perusahaan besar menggunakan bahasa pemrograman R, antara lain Uber, Google, Airbnb, Facebook, dan masih banyak lagi.[^index-1]
+
+[^index-1]: <https://wartaekonomi.co.id/read375198/apa-itu-r-programming-language>
+
+## Install R dan RStudio
+
+Untuk menginstall R, kamu tidak memerlukan budget untuk membeli lisensi. R merupakan aplikasi open source sehingga dapat kamu unduh secara gratis di laman aslinya. Berikut langkah penginstallan mulai dari cara download hingga R siap digunakan. Pertama buka [Halaman R Project](https://cran.r-project.org/). Pilih installer sesuai sistem operasi. Misalnya pilih **Download R for Windows** dan pilih **install R for the first time**. Tunggu proses unduh instaler dan jika sudah 100% terunduh klik file tersebut untuk mulai install R. setelah R berhasil diinstall langkah selanjutnya adalah menginstall program [RStudio](https://posit.co/download/rstudio-desktop/). Pada tahap ini kita akan install RStudio yaitu merupakan IDE yang umumnya digunakan untuk pemrograman R RStudio akan sangat membantu untuk melakukan coding R dan lainnya. Kita bisa langsung download installer versi terbaru atau jika ingin menggunakan versi sebelumnya bisa pilih all installer.
+
+## Menginstal dan memuat R packages
+
+Setelah selesai instalI [R](https://cran.r-project.org/) dan [RStudio](https://posit.co/download/rstudio-desktop/), serta memahami bagaimana menggunakannya, proses selanjutnya adalah instal R package. Kita dapat langsung melakukan instalasi R package yang sudah ada di [CRAN](https://cran.r-project.org/) repository (mayoritas R package ada di sini) dengan menuliskan perintah **install.packages(“nama package”)** pada RStudio atau di Console. Kita harus terhubung dengan koneksi internet untuk dapat instal package. Misal, kita instal package [*cluster*](https://cran.r-project.org/web/packages/cluster/index.html).
+
+
+``` r
+install.packages("cluster")
+```
+
+selain melalui [CRAN](https://cran.r-project.org/) repository, intall packages juga dapat melaui [Github](https://github.com/). Anda harus terlebih dahulu harus menginstal [devtools](https://cran.r-project.org/web/packages/devtools/index.html) jika Anda belum menginstalnya di komputer Anda. Misalnya, kode R berikut menginstal paket factoextra R versi terbaru yang dikembangkan oleh A. Kassambara (<https://github.com/kassambara/facoextra>) untuk analisis data multivariat dan visualisasi yang elegan.
+
+
+``` r
+install.packages("devtools")
+devtools::install_github("kassambara/factoextra")
+```
+
+::: {.rmdnote data-latex="{Note}"}
+Note that, GitHub contains the developmental version of R packages
+:::
+
+Setelah instalasi, pertama-tama Anda harus memuat paket untuk menggunakan fungsi-fungsi di dalam paket. Fungsi **library()**.
+
+
+``` r
+library(cluster)
+```
+
+::: {.lemma #chf-pdf}
+For any two random variables $X_1$, $X_2$, they both have the same probability distribution if and only if
+$$\varphi _{X_1}(t)=\varphi _{X_2}(t)$$
+:::
+
+::: {.theorem #chf-sum}
+If $X_1$, ..., $X_n$ are independent random variables, and $a_1$, ..., $a_n$ are some constants, then the characteristic function of the linear combination $S_n=\sum_{i=1}^na_iX_i$ is
+$$\varphi _{S_{n}}(t)=\prod_{i=1}^n\varphi _{X_i}(a_{i}t)=\varphi _{X_{1}}(a_{1}t)\cdots \varphi _{X_{n}}(a_{n}t)$$
+:::
+
+::: {.proposition #unnamed-chunk-4}
+The distribution of the sum of independent Poisson random variables $X_i \sim \mathrm{Pois}(\lambda_i),\: i=1,2,\cdots,n$ is $\mathrm{Pois}(\sum_{i=1}^n\lambda_i)$.
+:::
+
+## Lorem Ipsum5 {#math-formular}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. [^index-2].
+
+[^index-2]: <https://github.com/ElegantLaTeX/ElegantBook/blob/6ab10beda81252f0b478e05fa926199301347e4a/elegantbook.cls#L884>
+
+``` html
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: {
+        Macros: {
+          bm: ["{\\boldsymbol #1}",1],
+        }
+      }
+    });
+</script>
+```
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+``` html
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      TeX: {
+        Macros: {
+          bm: ["{\\boldsymbol #1}",1],
+        },
+        extensions: ["cancel.js"]
+      }
+    });
+</script>
+```
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+``` latex
+\usepackage[makeroom]{cancel}
+```
+
+## Lorem Ipsum6 {#custom-block}
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. <https://bookdown.org/yihui/rmarkdown-cookbook/custom-blocks.html>.
+
+[there is still a lot to do]{.todo}
+
+::: {.rmdwarn data-latex="{Warning}"}
+Warning
+:::
+
+::: {.rmdtip data-latex="{Tips}"}
+Tips
+:::
+
+::: {.rmdnote data-latex="{Note}"}
+Note
+:::
+
+::: rmdinfo
+Info
+:::
